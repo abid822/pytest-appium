@@ -28,6 +28,8 @@ pip install -r requirements.txt
 cp .env.example .env
 ```
 
+Open the folder in Cursor, install the recommended Python extension, and select the `.venv` interpreter. Cmd+click a function (F12) jumps to its definition. Ctrl+- goes back.
+
 Install Appium and the XCUITest driver, then confirm the driver is present:
 
 ```bash
