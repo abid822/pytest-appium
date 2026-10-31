@@ -1,3 +1,5 @@
+from selenium.common.exceptions import WebDriverException
+
 from locators.cart_locators import CartLocators
 from locators.catalog_locators import CatalogLocators
 from locators.menu_locators import MenuLocators
@@ -40,5 +42,21 @@ class CatalogScreen(BaseScreen):
     def open_more(self) -> None:
         self.tap(MenuLocators.MORE_TAB)
 
+    def product_names_at_bottom(self) -> list[str]:
+        # Collection cells that are off screen are not in the tree. Scroll
+        # until the visible set stops changing, which is the bottom of the grid.
+        previous: list[str] | None = None
+        names = self.product_names()
+        for _ in range(12):
+            if names == previous:
+                break
+            previous = names
+            try:
+                self.driver.execute_script("mobile: scroll", {"direction": "down"})
+            except WebDriverException:
+                break
+            names = self.product_names()
+        return names
+
     def cart_badge(self) -> str:
-        return self.visible_text(CartLocators.BADGE)
+        return self.tab_badge(CartLocators.TAB)

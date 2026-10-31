@@ -1,6 +1,6 @@
 import pytest
 
-from data.catalog import BOLT_BLACK, SHIRT_YELLOW
+from data.catalog import BIKE_LIGHT, SHIRT_YELLOW
 
 
 @pytest.mark.sort
@@ -11,7 +11,9 @@ def test_sort_products(catalog):
     catalog.sort_by("Name - Descending")
     catalog.wait_for_product(SHIRT_YELLOW)
     assert catalog.product_names()[0] == SHIRT_YELLOW
-    # Step 2: Price uses a string compare, so 15.99 (the bolt shirt) is first.
+    # Step 2: Price is a stable string compare. 15.99 stays in front, so the
+    # yellow shirt remains first. "9.99" sorts last, so the bike light is at the bottom.
     catalog.sort_by("Price - Ascending")
-    catalog.wait_for_product(BOLT_BLACK)
-    assert catalog.product_names()[0] == BOLT_BLACK
+    catalog.wait_for_product(SHIRT_YELLOW)
+    assert catalog.product_names()[0] == SHIRT_YELLOW
+    assert catalog.product_names_at_bottom()[-1] == BIKE_LIGHT

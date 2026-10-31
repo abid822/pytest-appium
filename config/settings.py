@@ -48,7 +48,7 @@ class Settings:
     app_activity: str = os.getenv("APP_ACTIVITY", "").strip()
     explicit_wait_seconds: int = int(os.getenv("EXPLICIT_WAIT_SECONDS", "15"))
     no_reset: bool = _bool("NO_RESET", True)
-    demo_username: str = os.getenv("DEMO_USERNAME", "bod@example.com")
+    demo_username: str = os.getenv("DEMO_USERNAME", "bob@example.com")
     demo_password: str = os.getenv("DEMO_PASSWORD", "10203040")
 
 

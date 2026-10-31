@@ -19,7 +19,7 @@ class ProductScreen(BaseScreen):
         self.tap(ProductLocators.ADD_TO_CART)
 
     def cart_badge(self) -> str:
-        return self.visible_text(CartLocators.BADGE)
+        return self.tab_badge(CartLocators.TAB)
 
     def open_cart(self) -> None:
         self.tap(CartLocators.TAB)

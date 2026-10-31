@@ -1,12 +1,14 @@
 """English catalog copy from My Demo App en.lproj and Utils.swift.
 
-Prices are stored as strings. The catalog sorts price with a string compare,
-so "15.99" comes before "7.99".
+Prices are stored as strings. sorted(by:) is stable, and "15.99" sorts before
+"29.99", "49.99", "7.99", and "9.99". After name descending, the yellow shirt
+stays first. The bike light ("9.99") sorts last.
 """
 
 BACKPACK_BLACK = "Sauce Labs Backpack - Black"
 BACKPACK_BLACK_PRICE = "29.99"
 BOLT_BLACK = "Sauce Labs Bolt T-Shirt - Black"
+BIKE_LIGHT = "Sauce Labs Bike Light"
 SHIRT_YELLOW = "Test.allTheThings() T-Shirt - Yellow"
 
 # LoginViewController only rejects an empty username or password.

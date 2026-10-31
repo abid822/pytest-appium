@@ -1,3 +1,4 @@
+from appium.webdriver.common.appiumby import AppiumBy
 from appium.webdriver.webdriver import WebDriver
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.remote.webelement import WebElement
@@ -73,6 +74,34 @@ class BaseScreen:
             if text:
                 texts.append(text)
         return texts
+
+    def tab_badge(self, tab: Locator) -> str:
+        """Count drawn on a tab item.
+
+        The cart badge is painted on the tab, but XCUITest marks that label
+        visible=false, so a displayed-only lookup never sees it.
+        """
+
+        def _count(driver: WebDriver) -> str | bool:
+            tabs = driver.find_elements(*tab)
+            if not tabs:
+                return False
+            bounds = tabs[0].rect
+            labels = driver.find_elements(
+                AppiumBy.IOS_PREDICATE,
+                'type == "XCUIElementTypeStaticText" AND name MATCHES "[0-9]+"',
+            )
+            for element in labels:
+                rect = element.rect
+                center_x = rect["x"] + rect["width"] / 2
+                center_y = rect["y"] + rect["height"] / 2
+                inside_x = bounds["x"] <= center_x <= bounds["x"] + bounds["width"]
+                inside_y = bounds["y"] <= center_y <= bounds["y"] + bounds["height"]
+                if inside_x and inside_y:
+                    return (element.get_attribute("name") or "").strip()
+            return False
+
+        return self.wait.until(_count)
 
     def hide_keyboard(self) -> None:
         try:

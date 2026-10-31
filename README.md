@@ -78,7 +78,7 @@ Values come from the environment. A `.env` file in the project root is loaded fi
 | `APP_ACTIVITY` | empty | Optional Android activity |
 | `EXPLICIT_WAIT_SECONDS` | `15` | Wait for screen elements |
 | `NO_RESET` | `true` | Keep the installed app between sessions |
-| `DEMO_USERNAME` | `bod@example.com` | Username used by the login test |
+| `DEMO_USERNAME` | `bob@example.com` | Username used by the login test |
 | `DEMO_PASSWORD` | `10203040` | Password used by the login test |
 
 `PLATFORM=android` builds a UiAutomator2 session from the same variables (`APP_PATH` should point at an APK, and `DEVICE_NAME` at an emulator or device). The locators in this repo are the iOS accessibility ids. Android screen locators are not filled in yet.
@@ -93,6 +93,10 @@ pytest tests/test_catalog.py
 ```
 
 Each test opens its own Appium session and closes it at the end. Markers are `smoke` and `regression`, plus `catalog`, `cart`, `login`, and `sort`.
+
+## HTML report
+
+Each run writes `reports/report.html`, the same card layout as the Amazon suite. Open that file in a browser. Failed checks include a simulator screenshot.
 
 ## Allure report
 
@@ -110,7 +114,7 @@ allure serve allure-results
 - Add to cart reveals the cart-tab badge `1`. The cart screen then shows `1 Items`.
 - Login from the More tab with `DEMO_USERNAME` / `DEMO_PASSWORD` returns to the catalog. The login screen also lists `bob@example.com`, `alice@example.com`, `john@example.com`, and `visual@example.com`. Tapping one of those fills the password `10203040`. The iOS login screen accepts any non-empty username and password.
 - Submitting the login form with both fields empty shows `Validation Error!` and `Username is required`.
-- Sort by name descending, then by price ascending. The app compares prices as strings, so `15.99` sorts before `7.99`.
+- Sort by name descending, then by price ascending. The app compares prices as strings and the sort is stable, so the yellow shirt stays first and the bike light (`9.99`) sorts last.
 
 ## Project structure
 

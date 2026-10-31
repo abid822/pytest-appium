@@ -29,11 +29,17 @@ class LoginScreen(BaseScreen):
             return
 
     def sign_in(self, username: str, password: str) -> None:
-        # Step 1: Fill both fields. The screen accepts any non-empty pair.
-        self.type_text(LoginLocators.USERNAME, username)
-        self.type_text(LoginLocators.PASSWORD, password)
-        # Step 2: Dismiss the keyboard so the footer Login button can be tapped.
-        self.hide_keyboard()
+        # The account row fills both fields and leaves the keyboard down.
+        # Typing into the fields raises the software keyboard, which covers
+        # the footer Login button, and this screen does not dismiss that keyboard.
+        account = (AppiumBy.ACCESSIBILITY_ID, username)
+        if self.driver.find_elements(*account):
+            self._bring_into_view(account)
+            self.tap(account)
+        else:
+            self.type_text(LoginLocators.USERNAME, username)
+            self.type_text(LoginLocators.PASSWORD, password)
+            self.hide_keyboard()
         self.tap(LoginLocators.LOGIN_BUTTON)
 
     def submit_empty(self) -> None:

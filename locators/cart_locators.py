@@ -8,14 +8,8 @@ class CartLocators:
 
     SCREEN = (AppiumBy.ACCESSIBILITY_ID, "Cart-screen")
     TAB = (AppiumBy.ACCESSIBILITY_ID, "Cart-tab-item")
-    # The badge label has no accessibility identifier. It sits in the cart tab,
-    # in the view just before the Cart-tab-item button. Hidden while the count is 0.
-    BADGE = (
-        AppiumBy.XPATH,
-        '//XCUIElementTypeButton[@name="Cart-tab-item"]'
-        "/preceding-sibling::XCUIElementTypeOther[1]"
-        "//XCUIElementTypeStaticText",
-    )
+    # cartCountLbl has no accessibility identifier. Its name is the count, it
+    # sits on the cart tab, and XCUITest reports it as not visible.
 
     @staticmethod
     def items_count(count: int) -> Locator:
